@@ -1,14 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.indiana.d2i.htrc</groupId>
   <artifactId>htrc-auditor</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>auditor Maven Mojo</name>
   <url>http://maven.apache.org</url>
+  
+  <scm>
+    <developerConnection>scm:svn:svn+ssh://svn.code.sf.net/p/htrc/code/HTRC-Security-Auditor/tags/htrc-auditor-0.0.1</developerConnection>
+  </scm>
+  
+  
   <distributionManagement>
-    <repository>
+    <!-- repository>
       <id>archiva.internal</id>
       <name>Internal Release Repository</name>
       <url>http://bitternut.cs.indiana.edu:10090/archiva/repository/internal</url>
@@ -17,7 +22,18 @@
       <id>archiva.snapshots</id>
       <name>Internal Snapshot Repository</name>
       <url>http://bitternut.cs.indiana.edu:10090/archiva/repository/snapshots</url>
+    </snapshotRepository -->
+    <repository>
+      <id>htrc.archiva.internal</id>
+      <name>HTRC Internal Release Repository</name>
+      <url>http://htrc.illinois.edu:8080/archiva/repository/internal</url>
+    </repository>
+    <snapshotRepository>
+      <id>htrc.archiva.snapshots</id>
+      <name>HTRC Snapshots Repository</name>
+      <url>http://htrc.illinois.edu:8080/archiva/repository/snapshots</url>
     </snapshotRepository>
+    
   </distributionManagement>
   <dependencies>
     <dependency>
@@ -54,6 +70,13 @@
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.0-beta-9</version>
+        <configuration>
+          <tagBase>svn+ssh://svn.code.sf.net/p/htrc/code/HTRC-Security-Auditor/tags</tagBase>
         </configuration>
       </plugin>
     </plugins>
