@@ -3,12 +3,12 @@
   <groupId>edu.indiana.d2i.htrc</groupId>
   <artifactId>htrc-auditor</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.2</version>
+  <version>0.0.3-SNAPSHOT</version>
   <name>auditor Maven Mojo</name>
   <url>http://maven.apache.org</url>
 
   <scm>
-    <developerConnection>scm:svn:svn+ssh://svn.code.sf.net/p/htrc/code/HTRC-Security-Auditor/tags/release-0.0.2</developerConnection>
+    <developerConnection>scm:svn:svn+ssh://svn.code.sf.net/p/htrc/code/HTRC-Security-Auditor/trunk</developerConnection>
   </scm>
 
 
