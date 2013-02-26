@@ -1,6 +1,6 @@
 /*
 #
-# Copyright 2012 The Trustees of Indiana University
+# Copyright 2013 The Trustees of Indiana University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -10,7 +10,7 @@
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
@@ -18,7 +18,7 @@
 #
 # Project: auditor
 # File:  AuditorFactory.java
-# Description:  
+# Description: This class is the AuditorFactory for initializing and creating Auditor instances
 #
 # -----------------------------------------------------------------
 # 
@@ -39,15 +39,20 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 /**
+ * This class is the AuditorFactory for initializing and creating Auditor instances
  * @author Yiming Sun
  *
  */
 public final class AuditorFactory {
     private static Logger log = Logger.getLogger(AuditorFactory.class);
-    private static String auditorClassName = "edu.indiana.d2i.htrc.access.audit.NullAuditor";
+    public static final String DEFAULT_AUDITOR_CLASS_NAME = "edu.indiana.d2i.htrc.access.audit.NullAuditor";
+    private static String auditorClassName = DEFAULT_AUDITOR_CLASS_NAME;
     
-//    protected static Auditor auditor = new NullAuditor();
-    
+    /**
+     * Method to create Auditor instances
+     * @param contextMap a Map object containing request context information
+     * @return an Auditor object
+     */
     public static Auditor getAuditor(Map<String, List<String>> contextMap) {
         Auditor auditor = null;
         try {
@@ -77,10 +82,21 @@ public final class AuditorFactory {
         return auditor;
     }
     
-    public static void init(String auditorClassName) {
-        String localAuditorClassName = auditorClassName.trim();
-        if (localAuditorClassName != null && !"".equals(localAuditorClassName)) {
-            AuditorFactory.auditorClassName = localAuditorClassName;
+    /**
+     * Method to initialize the AuditorFactory to produce a specific implementation of the Auditor interface
+     * @param auditorClass a fully qualified name of the specific Auditor class implementation
+     */
+    public static void init(String auditorClass) {
+        if (auditorClass != null) {
+            String localAuditorClassName = auditorClass.trim();
+            if (!"".equals(localAuditorClassName)) {
+                AuditorFactory.auditorClassName = localAuditorClassName;
+                log.info("Using auditor class: " + localAuditorClassName);
+            } else {
+                log.info("Using default auditor class: " + AuditorFactory.auditorClassName);
+            }
+        } else {
+            log.info("Using default auditor class: " + AuditorFactory.auditorClassName);
         }
        
     }

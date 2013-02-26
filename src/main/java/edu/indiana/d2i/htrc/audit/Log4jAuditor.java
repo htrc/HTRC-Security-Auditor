@@ -10,7 +10,7 @@
 #
 # Unless required by applicable law or areed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
@@ -18,7 +18,7 @@
 #
 # Project: data-api
 # File:  Log4jAuditer.java
-# Description:  
+# Description: This class extends the AbstractAuditor class and uses Log4j to record audit information
 #
 # -----------------------------------------------------------------
 # 
@@ -37,6 +37,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 /**
+ * This class extends the AbstractAuditor class and uses Log4j to record audit information
+ * 
  * @author Yiming Sun
  *
  */
@@ -45,17 +47,17 @@ public final class Log4jAuditor extends AbstractAuditor {
     private static final Logger auditLogger = Logger.getLogger("audit");
     private static Logger log = Logger.getLogger(Log4jAuditor.class);
     
-//    private static final String SPACE = " ";
     private static final String TAB = "\t";
     private static final String COMMA = ",";
     private static final String UNKNOWN = "UNKNOWN";
     private static final String VIA = "->";
     
-//    private String userID = UNKNOWN;
-//    private String userIP = UNKNOWN;
-    
     private String userIdentity = null;
-    
+   
+    /**
+     * Constructor that extracts request context information from the context map to populate and harden some fields for better performance
+     * @param contextMap a Map object containing request context information
+     */
     public Log4jAuditor(Map<String, List<String>> contextMap) {
         super(contextMap);
         String userID = UNKNOWN;
@@ -94,8 +96,6 @@ public final class Log4jAuditor extends AbstractAuditor {
      */
     @Override
     public void audit(String action, String volumeID, String... pageSequences) {
-//        StringBuilder builder = new StringBuilder(userID);
-//        builder.append(TAB).append(userIP).append(TAB).append(action).append(TAB).append(volumeID);
 
     	StringBuilder builder = new StringBuilder(userIdentity);
     	builder.append(action).append(TAB).append(volumeID);
@@ -113,16 +113,11 @@ public final class Log4jAuditor extends AbstractAuditor {
     }
     
     
-//    @Override
-//    public void error(String errorType, String message, String cause) {
-////        StringBuilder builder = new StringBuilder(userID);
-////        builder.append(TAB).append(userIP).append(TAB).append(errorType).append(TAB).append(message).append(TAB).append(cause);
-//    	StringBuilder builder = new StringBuilder(userIdentity);
-//    	builder.append(errorType).append(TAB).append(message).append(TAB).append(cause);
-//        auditLogger.error(builder.toString());
-//    }
-    
-    
+    /**
+     * Method that converts a list of String objects into a single comma-separated String object
+     * @param list a List of String objects
+     * @return a String object containing items from the List separated by comma
+     */
     protected String listToString(List<String> list) {
         StringBuilder builder = new StringBuilder();
         

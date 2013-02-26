@@ -18,7 +18,7 @@
 #
 # Project: auditor
 # File:  NullAuditor.java
-# Description:  
+# Description: This class is the default no-op implementation of Auditor 
 #
 # -----------------------------------------------------------------
 # 
@@ -35,11 +35,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * This class is the default no-op implementation of Auditor
+ * 
  * @author Yiming Sun
  *
  */
 public class NullAuditor extends AbstractAuditor {
 
+    /**
+     * Constructor
+     * @param contextMap a Map object
+     */
     public NullAuditor(Map<String, List<String>> contextMap) {
         super(contextMap);
     }

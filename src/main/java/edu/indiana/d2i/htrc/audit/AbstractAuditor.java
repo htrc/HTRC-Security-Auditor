@@ -10,7 +10,7 @@
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
@@ -18,7 +18,7 @@
 #
 # Project: auditor
 # File:  AbstractAuditor.java
-# Description:  
+# Description: this abstract class implements the Auditor interface 
 #
 # -----------------------------------------------------------------
 # 
@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * this abstract class implements the Auditor interface
+ * 
  * @author Yiming Sun
  *
  */
@@ -42,6 +44,10 @@ public abstract class AbstractAuditor implements Auditor {
     
     protected final Map<String, List<String>> contextMap;
 
+    /**
+     * Constructor
+     * @param contextMap a Map object containing request context information
+     */
     public AbstractAuditor(Map<String, List<String>> contextMap) {
         this.contextMap = contextMap;
     }
