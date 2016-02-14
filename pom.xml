@@ -5,64 +5,85 @@
   <artifactId>htrc-auditor</artifactId>
   <packaging>jar</packaging>
   <version>0.0.3-SNAPSHOT</version>
-  <name>HTRC Security Auditor</name>
-  <url>http://wiki.htrc.illinois.edu/display/DEV/HTRC-Security-Auditor</url>
 
   <properties>
+    <github.global.server>github</github.global.server>
+    <public.code.repo>git://github.com/htrc</public.code.repo>
+    <developer.code.repo>git@github.com:htrc</developer.code.repo>
+    <github.repo.name>HTRC-Security-Auditor</github.repo.name>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <public.svn.root>svn://svn.code.sf.net/p/htrc/code</public.svn.root>
-    <developer.svn.root>svn+ssh://svn.code.sf.net/p/htrc/code</developer.svn.root>
-    <fisheye.svn.root>http://fisheye.htrc.illinois.edu/changelog</fisheye.svn.root>
+    <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
   </properties>
-  
-  <scm>
-    <connection>scm:svn:${public.svn.root}/HTRC-Security-Auditor/trunk</connection>
-    <developerConnection>scm:svn:${developer.svn.root}/HTRC-Security-Auditor/trunk</developerConnection>
-    <url>${fisheye.svn.root}/HTRC-Security-Auditor/trunk</url>
-  </scm>
 
-  <repositories>
-    <repository>
-      <id>htrc.archiva.internal</id>
-      <name>HTRC Internal Archiva Repository</name>
-      <url>http://htrc.illinois.edu:8080/archiva/repository/internal</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>htrc.archiva.snapshots</id>
-      <name>HTRC Snapshots Archiva Repository</name>
-      <url>http://htrc.illinois.edu:8080/archiva/repository/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-  
-  
-  <distributionManagement>
-    <repository>
-      <id>htrc.archiva.internal</id>
-      <name>HTRC Internal Release Repository</name>
-      <url>http://htrc.illinois.edu:8080/archiva/repository/internal</url>
-    </repository>
-    <snapshotRepository>
-      <id>htrc.archiva.snapshots</id>
-      <name>HTRC Snapshots Repository</name>
-      <url>http://htrc.illinois.edu:8080/archiva/repository/snapshots</url>
-    </snapshotRepository>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>2.2.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+          </execution>
+        </executions>
 
-  </distributionManagement>
+        <configuration>
+          <failOnNoGitDirectory>false</failOnNoGitDirectory>
+          <gitDescribe>
+            <dirty>-SNAPSHOT</dirty>
+          </gitDescribe>
+        </configuration>
+      </plugin>
 
+      <plugin>
+        <groupId>external.atlassian.jgitflow</groupId>
+        <artifactId>jgitflow-maven-plugin</artifactId>
+        <version>1.0-m5.1</version>
+        <configuration>
+          <!-- see https://bitbucket.org/atlassian/jgit-flow/wiki/goals.wiki for configuration options -->
+          <pushFeatures>true</pushFeatures>
+          <pushReleases>true</pushReleases>
+          <pushHotfixes>true</pushHotfixes>
+          <flowInitContext>
+            <versionTagPrefix>v</versionTagPrefix>
+          </flowInitContext>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.5.1</version>
+          <configuration>
+            <source>1.7</source>
+            <target>1.7</target>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <archive>
+              <manifestEntries>
+                <Git-Sha>${git.commit.id}</Git-Sha>
+                <Git-Branch>${git.branch}</Git-Branch>
+                <Git-Version>${git.commit.id.describe}</Git-Version>
+                <Git-Dirty>${git.dirty}</Git-Dirty>
+                <Build-Date>${git.build.time}</Build-Date>
+              </manifestEntries>
+            </archive>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
   <dependencies>
     <dependency>
@@ -83,46 +104,82 @@
     </dependency>
   </dependencies>
 
-  <build>
+  <!-- Project Information -->
+  <name>HTRC Security Auditor</name>
+  <url>https://htrc.github.io/${github.repo.name}</url>
+
+  <organization>
+    <name>HathiTrust Research Center</name>
+    <url>http://www.hathitrust.org/htrc</url>
+  </organization>
+
+  <!-- Environment Settings -->
+  <issueManagement>
+    <system>jira</system>
+    <url>https://jira.htrc.illinois.edu/browse/SHARC</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>bamboo</system>
+    <url>http://bamboo.htrc.illinois.edu/browse/AUDITOR</url>
+  </ciManagement>
+
+  <scm>
+    <connection>scm:git:${public.code.repo}/${github.repo.name}.git</connection>
+    <developerConnection>scm:git:${developer.code.repo}/${github.repo.name}.git</developerConnection>
+    <url>https://github.com/htrc/${github.repo.name}</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <!-- Reporting -->
+  <reporting>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.0</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.8.1</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.4</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.scm</groupId>
-            <artifactId>maven-scm-provider-svnexe</artifactId>
-            <version>1.8.1</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <useReleaseProfile>false</useReleaseProfile>
-          <tagBase>${developer.svn.root}/HTRC-Security-Auditor/tags</tagBase>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.1</version>
       </plugin>
     </plugins>
-  </build>
-  
-    <organization>
-        <name>HathiTrust Research Center</name>
-        <url>http://www.hathitrust.org/htrc</url>
-    </organization>
-    <!-- Environment Settings -->
-    <issueManagement>
-        <system>jira</system>
-        <url>http://jira.htrc.illinois.edu/browse/AUDITOR</url>
-    </issueManagement>
- 
-    <ciManagement>
-        <system>bamboo</system>
-        <url>http://bamboo.htrc.illinois.edu/browse/AUDITOR</url>
-    </ciManagement>
+  </reporting>
+
+  <!-- Repositories -->
+  <repositories>
+    <repository>
+      <id>nexus</id>
+      <name>HTRC Nexus Repository</name>
+      <url>http://nexus.htrc.illinois.edu/content/groups/public/</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>nexus</id>
+      <name>HTRC Nexus Repository</name>
+      <url>http://nexus.htrc.illinois.edu/content/groups/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <distributionManagement>
+    <repository>
+      <id>htrc.nexus.releases</id>
+      <name>HTRC Release Repository</name>
+      <url>https://nexus.htrc.illinois.edu/content/repositories/releases/</url>
+    </repository>
+
+    <snapshotRepository>
+      <id>htrc.nexus.snapshots</id>
+      <name>HTRC Snapshot Repository</name>
+      <url>https://nexus.htrc.illinois.edu/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
 </project>
